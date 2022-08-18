@@ -2,10 +2,13 @@
   "name": "backend-contador-horas",
   "version": "1.0.0",
   "description": "",
-  "main": "Server.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon Server"
+    "start": "nodemon server"
+  },
+  "engines":{
+    "node": "16.15.1"
   },
   "author": "",
   "license": "ISC",
