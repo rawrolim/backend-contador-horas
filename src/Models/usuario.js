@@ -21,6 +21,10 @@ const UsuarioSchema = new mongoose.Schema({
         required: false,
         default: true,
     },
+    refreshToken: {
+        type: String,
+        required: false,
+    },
     createdAt: {
         type: Date,
         default: Date.now,

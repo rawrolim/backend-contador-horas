@@ -11,7 +11,9 @@ api.get("/", function(req,res,next){
     });
 });
 
-api.post("/login", authController.post);
+api.post("/login", authController.login);
+api.post("/verifica_token", authController.verificaToken);
+api.post("/refresh_token", authController.refreshToken);
 
 api.post("/usuario", usuarioController.post);
 api.get("/usuario", usuarioController.get);

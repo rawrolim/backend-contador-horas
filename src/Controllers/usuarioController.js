@@ -1,7 +1,9 @@
 const Usuario = require("../Models/usuario");
+const md5 = require("md5");
 
 exports.post = async (req,res) => {
     try {
+        req.body.senha=md5(req.body.senha);
         const usuario = await Usuario.create(req.body);
         return res.status(200).send({ usuario });
     }catch(err){
