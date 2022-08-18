@@ -14,8 +14,8 @@ api.get("/", function(req,res,next){
 api.post("/login", authController.login);
 api.post("/refresh_token", authController.refreshToken);
 api.post("/verifica_token", authController.verificaToken);
+api.post("/usuario", usuarioController.post);
 
-api.post("/usuario", authController.verificaToken, usuarioController.post);
 api.get("/usuario", authController.verificaToken, usuarioController.get);
 api.get("/usuario/:id", authController.verificaToken, usuarioController.get);
 api.put("/usuario/:id", authController.verificaToken, usuarioController.put);
