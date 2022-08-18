@@ -13,7 +13,7 @@ exports.login = async (req,res) => {
         const jwtData = { 
             userId: usuario.id, 
             userEmail: usuario.email, 
-            exp: Math.floor(Date.now() / 1000) + (60 * 60),
+            exp: Math.floor(Date.now() / 1000) + (60 * 5),
             refreshToken: generateToken()
         };
 
@@ -34,11 +34,17 @@ exports.login = async (req,res) => {
     }
 }
 
-exports.verificaToken = async (req, res) => {
+exports.verificaToken = async (req, res, next) => {
     try {
-        const usuario = await jwt.verify(req.body.token, process.env.SECRET_KEY);
+        var usuario = jwt.verify(req.body.token, process.env.SECRET_KEY);
+        
+        var usuarioRs = await Usuario.findOne({ refreshToken: usuario.refreshToken, email: usuario.userEmail });
 
-        res.status(200).send({usuario});
+        if(!usuarioRs){
+            throw Error("O refresh token enviado na requisição não é o mesmo do banco de dados.");
+        }
+
+        res.status(200).send({usuarioRs});
     }catch(err){
         return res.status(400).send({erro: ''+err });
     }
@@ -55,7 +61,7 @@ exports.refreshToken = async (req,res) => {
         const jwtData = { 
             userId: usuario.id, 
             userEmail: usuario.email, 
-            exp: Math.floor(Date.now() / 1000) + (60),
+            exp: Math.floor(Date.now() / 1000) + (60 * 5),
             refreshToken: generateToken()
         };
 

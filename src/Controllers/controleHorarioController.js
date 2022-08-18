@@ -37,7 +37,7 @@ exports.put = async (req, res) => {
 
 exports.delete = async (req,res) => {
     try {
-        const controleHorario = await ControleHorario.findByIdAndDelete(req.params.id, { status: true });
+        await ControleHorario.findByIdAndDelete(req.body.id);
         return res.status(200).send({});
     } catch(err){
         return res.status(400).send({erro: ''+err });

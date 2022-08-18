@@ -12,20 +12,21 @@ api.get("/", function(req,res,next){
 });
 
 api.post("/login", authController.login);
-api.post("/verifica_token", authController.verificaToken);
 api.post("/refresh_token", authController.refreshToken);
+api.post("/verifica_token", authController.verificaToken);
 
-api.post("/usuario", usuarioController.post);
-api.get("/usuario", usuarioController.get);
-api.get("/usuario/:id", usuarioController.get);
-api.put("/usuario/:id", usuarioController.put);
-api.delete("/usuario/:id", usuarioController.delete);
+api.post("/usuario", authController.verificaToken, usuarioController.post);
+api.get("/usuario", authController.verificaToken, usuarioController.get);
+api.get("/usuario/:id", authController.verificaToken, usuarioController.get);
+api.put("/usuario/:id", authController.verificaToken, usuarioController.put);
+api.delete("/usuario/:id", authController.verificaToken, usuarioController.delete);
 
-api.post("/controle_horario", controleHorarioController.post);
-api.get("/controle_horario", controleHorarioController.get);
-api.get("/controle_horario/:id", controleHorarioController.get);
-api.put("/controle_horario/:id", controleHorarioController.put);
-api.delete("/controle_horario/:id", controleHorarioController.delete);
+api.post("/controle_horario", authController.verificaToken, controleHorarioController.post);
+api.post("/concluir", authController.verificaToken, controleHorarioController.concluir);
+api.get("/controle_horario", authController.verificaToken, controleHorarioController.get);
+api.get("/controle_horario/:id", authController.verificaToken, controleHorarioController.get);
+api.put("/controle_horario/:id", authController.verificaToken, controleHorarioController.put);
+api.delete("/controle_horario/:id", authController.verificaToken, controleHorarioController.delete);
 
 
 module.exports = api;
