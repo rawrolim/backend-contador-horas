@@ -50,6 +50,22 @@ exports.verificaToken = async (req, res, next) => {
     }
 }
 
+exports.verificaTokenMiddlware = async (req, res, next) => {
+    try {
+        var usuario = jwt.verify(req.body.token, process.env.SECRET_KEY);
+        
+        var usuarioRs = await Usuario.findOne({ refreshToken: usuario.refreshToken, email: usuario.userEmail });
+
+        if(!usuarioRs){
+            throw Error("O refresh token enviado na requisição não é o mesmo do banco de dados.");
+        }
+
+        next();
+    }catch(err){
+        return res.status(400).send({erro: ''+err });
+    }
+}
+
 exports.refreshToken = async (req,res) => {
     try{
         const usuario = await Usuario.findOne({ refreshToken: req.body.refreshToken, email: req.body.email });
