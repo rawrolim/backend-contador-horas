@@ -24,6 +24,10 @@ const ControleHorarioSchema = new mongoose.Schema({
     status: {
         type: Boolean,
         default: false,
+    },
+    apontando: {
+        type: Boolean,
+        default: false,
     }
 });
 
