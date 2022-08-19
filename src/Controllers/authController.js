@@ -11,7 +11,7 @@ exports.login = async (req,res) => {
         }
 
         const jwtData = { 
-            userId: usuario.id, 
+            userId: usuario._id, 
             userEmail: usuario.email, 
             exp: Math.floor(Date.now() / 1000) + (60 * 5),
             refreshToken: generateToken()
@@ -20,7 +20,7 @@ exports.login = async (req,res) => {
         usuario.refreshToken = jwtData.refreshToken;
 
         try{
-            await Usuario.findByIdAndUpdate(usuario.id, { refreshToken: usuario.refreshToken });
+            await Usuario.findByIdAndUpdate(usuario._id, { refreshToken: usuario.refreshToken });
         }catch(err){
             throw Error("Erro para atualizar o refresh token no usuario.");
         }
@@ -52,30 +52,28 @@ exports.verificaToken = async (req, res, next) => {
 
 exports.refreshToken = async (req,res) => {
     try{
-        const usuario = Usuario.findOne({ refreshToken: req.body.refreshToken, email: req.body.email });
+        const usuario = await Usuario.findOne({ refreshToken: req.body.refreshToken, email: req.body.email });
 
         if(!usuario){
             throw Error("Erro de refresh token");
         }
 
         const jwtData = { 
-            userId: usuario.id, 
+            userId: usuario._id, 
             userEmail: usuario.email, 
             exp: Math.floor(Date.now() / 1000) + (60 * 5),
             refreshToken: generateToken()
         };
 
-        usuario.refreshToken = jwtData.refreshToken;
-
         try{
-            await Usuario.findByIdAndUpdate(usuario.id, { refreshToken: usuario.refreshToken });
+            await Usuario.findByIdAndUpdate(usuario._id, { refreshToken: jwtData.refreshToken });
         }catch(err){
             throw Error("Erro para atualizar o refresh token no usuario.");
         }
 
-        var token = jwt.sign(jwtData, process.env.SECRET_KEY);
+        const token = jwt.sign(jwtData, process.env.SECRET_KEY);
 
-        res.status(200).send({token});
+        res.status(200).send({ token });
     }catch(err){
         return res.status(400).send({erro: ''+err });
     }
