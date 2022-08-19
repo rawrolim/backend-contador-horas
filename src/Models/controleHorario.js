@@ -9,6 +9,10 @@ const ControleHorarioSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    tempo: {
+        type: Number,
+        default: 0,
+    },
     data_hora_inicial: {
         type: Date,
         default: Date.now,
