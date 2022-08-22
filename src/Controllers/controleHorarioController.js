@@ -12,12 +12,12 @@ exports.post = async (req,res) => {
 exports.get = async (req, res) => {
     try {
         var controleHorarios;
-        if(req.params.id){
-            controleHorarios = await ControleHorario.findOne({"_id": req.params.id});
-        }else if(req.body){
-            controleHorarios = await ControleHorario.findOne(req.body);
+        if(req.header("usuario_id")){
+            controleHorarios = await ControleHorario.find({"usuario_id": req.header("usuario_id")});
+        }else if(req.params){
+            controleHorarios = await ControleHorario.find(req.params);
         }else{
-            controleHorarios = await ControleHorario.find({});
+            controleHorarios = await ControleHorario.find();
         }
         return res.status(200).send({controleHorarios});
     }catch(err){

@@ -52,7 +52,7 @@ exports.verificaToken = async (req, res, next) => {
 
 exports.verificaTokenMiddlware = async (req, res, next) => {
     try {
-        var usuario = jwt.verify(req.body.token, process.env.SECRET_KEY);
+        var usuario = jwt.verify(req.header("token"), process.env.SECRET_KEY);
         
         var usuarioRs = await Usuario.findOne({ refreshToken: usuario.refreshToken, email: usuario.userEmail });
 
